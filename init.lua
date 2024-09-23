@@ -278,21 +278,7 @@ require('lazy').setup({
   -- after the plugin has been loaded:
   --  config = function() ... end
   --42Header - Dont forget to change username and email!
-  {
-    'Diogo-ss/42-header.nvim',
-    cmd = { 'Stdheader' },
-    keys = { '<F1>' },
-    opts = {
-      default_map = true, -- Default mapping <F1> in normal mode.
-      auto_update = true, -- Update header when saving.
-      user = 'marsoare', -- Your user.
-      mail = 'marsoare@student.42porto.com', -- Your mail.
-      -- add other options.
-    },
-    config = function(_, opts)
-      require('42header').setup(opts)
-    end,
-  },
+  require 'plugins.42-header',
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'

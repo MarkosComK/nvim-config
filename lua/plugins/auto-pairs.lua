@@ -1,4 +1,3 @@
--- plugins/auto-pairs.lua
 return {
   'windwp/nvim-autopairs', -- Plugin name
   config = function()
@@ -11,10 +10,5 @@ return {
       map_complete = true, -- Enable autopairs completion
       auto_select = true, -- Automatically select the first pair
     }
-
-    -- Optional: Setup for handling specific file types
-    -- require('nvim-autopairs').add_rules(require('nvim-autopairs.rules').autopairs)
-
-    -- You can also map any specific keys here if needed
   end,
 }
