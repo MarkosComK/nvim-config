@@ -239,6 +239,9 @@ require('lazy').setup({
   require 'plugins.42-header',
   require 'plugins.telescope',
   require 'plugins.lspconfig',
+  -- colorthemes
+  require 'themes.cyberdream',
+  require 'themes.tokyonight',
 
   { -- Autoformat
     'stevearc/conform.nvim',
@@ -387,64 +390,6 @@ require('lazy').setup({
       }
     end,
   },
-  {
-    'scottmckendry/cyberdream.nvim',
-    lazy = false, -- Load it immediately
-    priority = 1000, -- High priority to ensure it's loaded before other plugins
-    config = function()
-      -- Setup cyberdream with transparent background
-      require('cyberdream').setup {
-        transparent = true, -- Enable transparent background
-        theme = {
-          -- Other theme options here
-          variant = 'default', -- You can leave it as default
-          highlights = {
-            -- Any additional highlight overrides you want
-            Comment = { fg = nil, bg = nil, italic = false },
-          },
-          overrides = function(colors)
-            return {
-              Comment = { fg = colors.grey, bg = 'NONE', italic = false },
-              -- Additional highlight overrides can go here
-            }
-          end,
-        },
-        extensions = {
-          telescope = true,
-          notify = true,
-          mini = true,
-        },
-      }
-
-      -- Set the colorscheme
-      vim.cmd [[colorscheme cyberdream]]
-    end,
-  },
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
-    init = function()
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
-
-      -- You can configure highlights by doing something like:
-      vim.cmd.hi 'Comment gui=none'
-    end,
-    opts = {
-      transparent = true,
-      styles = {
-        sidebars = 'transparent',
-        floats = 'transparent',
-      },
-    },
-  },
-
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
