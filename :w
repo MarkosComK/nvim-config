@@ -37,6 +37,6 @@ return {
     -- Change the color of line numbers
     vim.cmd.hi 'LineNr guifg=#7b8496' -- Set the color for normal line numbers
     vim.cmd.hi 'CursorLineNr guifg=#5ea1ff'
-    vim.cmd.hi 'CursorLine guibg=#012140'
+    vim.cmd.hi 'CursorLine guibg=#001c3f'
   end,
 }
