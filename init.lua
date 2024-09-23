@@ -19,7 +19,6 @@
 ========                                                     ========
 =====================================================================
 =====================================================================
-
 What is Kickstart?
 
   Kickstart.nvim is *not* a distribution.
@@ -83,13 +82,7 @@ I hope you enjoy your Neovim journey,
 
 P.S. You can delete this when you're done too. It's your config now! :)
 --]]
--- OWN REMAPS
-vim.keymap.set('i', "'", "''<left>", { noremap = true })
-vim.keymap.set('i', '"', '""<left>', { noremap = true })
-vim.keymap.set('i', '(', '()<left>', { noremap = true })
-vim.keymap.set('i', '[', '[]<left>', { noremap = true })
-vim.keymap.set('i', '{', '{}<left>', { noremap = true })
-vim.keymap.set('i', '{<CR>', '<CR>{<CR>}<ESC>O', { noremap = true })
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -234,11 +227,12 @@ vim.opt.rtp:prepend(lazypath)
 --
 --  To update plugins you can run
 --    :Lazy update
---
+---- This file can be loaded by calling `lua require('plugins')` from your init.vim
+
+-- Only required if you have packer configured as `opt`
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -267,18 +261,8 @@ require('lazy').setup({
       },
     },
   },
-
-  {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v3.x',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
-      'MunifTanjim/nui.nvim',
-      -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
-    },
-  },
-
+  require 'plugins.neo-tree',
+  require 'plugins.auto-pairs',
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
   -- This is often very useful to both group configuration, as well as handle
@@ -309,7 +293,6 @@ require('lazy').setup({
       require('42header').setup(opts)
     end,
   },
-
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
@@ -809,7 +792,39 @@ require('lazy').setup({
       }
     end,
   },
+  {
+    'scottmckendry/cyberdream.nvim',
+    lazy = false, -- Load it immediately
+    priority = 1000, -- High priority to ensure it's loaded before other plugins
+    config = function()
+      -- Setup cyberdream with transparent background
+      require('cyberdream').setup {
+        transparent = true, -- Enable transparent background
+        theme = {
+          -- Other theme options here
+          variant = 'default', -- You can leave it as default
+          highlights = {
+            -- Any additional highlight overrides you want
+            Comment = { fg = nil, bg = nil, italic = false },
+          },
+          overrides = function(colors)
+            return {
+              Comment = { fg = colors.grey, bg = 'NONE', italic = false },
+              -- Additional highlight overrides can go here
+            }
+          end,
+        },
+        extensions = {
+          telescope = true,
+          notify = true,
+          mini = true,
+        },
+      }
 
+      -- Set the colorscheme
+      vim.cmd [[colorscheme cyberdream]]
+    end,
+  },
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
     -- change the command in the config to whatever the name of that colorscheme is.
@@ -826,6 +841,13 @@ require('lazy').setup({
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
     end,
+    opts = {
+      transparent = true,
+      styles = {
+        sidebars = 'transparent',
+        floats = 'transparent',
+      },
+    },
   },
 
   -- Highlight todo, notes, etc in comments
