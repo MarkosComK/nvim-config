@@ -170,6 +170,7 @@ require('lazy').setup({
   require 'plugins.42-header',
   require 'plugins.telescope',
   require 'plugins.lspconfig',
+  require 'plugins.floaterm',
   -- colorthemes
   require 'themes.cyberdream',
   require 'themes.tokyonight',
