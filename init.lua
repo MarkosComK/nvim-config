@@ -175,6 +175,11 @@ require('lazy').setup({
   require 'themes.cyberdream',
   require 'themes.tokyonight',
 
+  {
+    'kyazdani42/nvim-web-devicons',
+    event = 'VimEnter', -- Optional; load on startup
+  },
+
   { -- Autoformat
     'stevearc/conform.nvim',
     lazy = false,
