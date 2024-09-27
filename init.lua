@@ -171,6 +171,8 @@ require('lazy').setup({
   require 'plugins.telescope',
   require 'plugins.lspconfig',
   require 'plugins.floaterm',
+  require 'plugins.nvim-ts-autotag',
+  require 'plugins.coc-nvim',
   -- colorthemes
   require 'themes.cyberdream',
   require 'themes.tokyonight',
@@ -288,7 +290,7 @@ require('lazy').setup({
 
           -- If you prefer more traditional completion keymaps,
           -- you can uncomment the following lines
-          --['<CR>'] = cmp.mapping.confirm { select = true },
+          ['<C-CR>'] = cmp.mapping.confirm { select = true },
           --['<Tab>'] = cmp.mapping.select_next_item(),
           --['<S-Tab>'] = cmp.mapping.select_prev_item(),
 
