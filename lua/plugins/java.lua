@@ -15,13 +15,6 @@ return {
         ensure_installed = { "jdtls" }
       })
 
-      -- Setup Java
-      require("java").setup({
-        jdk = { auto_install = true },
-        jdtls = { auto_install = true },
-        dap = { auto_install = true },
-      })
-
       -- Tmux-aware keymaps for Java
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "java",
