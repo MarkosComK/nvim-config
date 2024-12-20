@@ -16,23 +16,6 @@ vim.opt.rtp:prepend(lazypath)
 -- Carregar plugins com lazy.nvim
 require("lazy").setup({
 	{
-	"nvim-java/nvim-java",
-	config = function()
-		require("java").setup() -- Configuração básica
-		require("lspconfig").jdtls.setup({}) -- Configuração do LSP
-	end,
-	},
-	{
-		"OXY2DEV/markview.nvim",
-		lazy = false,      -- Recommended
-		-- ft = "markdown" -- If you decide to lazy-load anyway
-
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-			"nvim-tree/nvim-web-devicons"
-		}
-	},
-	{
 		"akinsho/flutter-tools.nvim",
 		lazy = false,
 		dependencies = {
@@ -80,6 +63,7 @@ require("lazy").setup({
 			}
 		end,
 	},
+	require 'plugins.java',
 	require 'plugins.neo-tree',
 	require 'plugins.coc',
 	require 'plugins.lsp',
