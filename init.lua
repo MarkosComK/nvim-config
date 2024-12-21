@@ -74,6 +74,6 @@ require("lazy").setup({
 	require 'plugins.42-header',
 	require 'plugins.42-norminette',
 	require 'plugins.barbar',
-	require 'themes.cyberdream',
 	-- Theme setup
+	require 'themes.everforest',
 })
