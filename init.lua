@@ -1,3 +1,5 @@
+vim.g.loaded_which_key = 1
+
 require('settings')
 -- Configuração do lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
