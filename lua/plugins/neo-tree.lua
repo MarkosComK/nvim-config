@@ -23,7 +23,7 @@ return {
         },
       },
     }
-    -- Atalho para abrir/fechar o Neo-tree com Ctrl+Space
-    vim.api.nvim_set_keymap('n', '<C-Space>', ':Neotree toggle<CR>', { noremap = true, silent = true })
+    -- Atalho para abrir/fechar o Neo-tree com Space+Space
+    vim.api.nvim_set_keymap('n', '<leader><leader>', ':Neotree toggle<CR>', { noremap = true, silent = true })
   end,
 }
