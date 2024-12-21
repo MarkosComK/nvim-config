@@ -16,10 +16,10 @@ vim.opt.expandtab = false -- keep tabulações
 vim.g.have_nerd_font = true
 
 -- Configurar navegação entre janelas com Ctrl + hjkl
-vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h', { noremap = true, silent = true }) -- Janela à esquerda
-vim.api.nvim_set_keymap('n', '<C-j>', '<C-w>j', { noremap = true, silent = true }) -- Janela abaixo
-vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k', { noremap = true, silent = true }) -- Janela acima
-vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', { noremap = true, silent = true }) -- Janela à direita
+vim.keymap.set('n', '<Space>h', '<C-w>h', { desc = 'Move to left window' })
+vim.keymap.set('n', '<Space>j', '<C-w>j', { desc = 'Move to bottom window' })
+vim.keymap.set('n', '<Space>k', '<C-w>k', { desc = 'Move to top window' })
+vim.keymap.set('n', '<Space>l', '<C-w>l', { desc = 'Move to right window' })
 
 -- Mapeamentos para navegação em modo de inserção
 vim.api.nvim_set_keymap('i', '<C-h>', '<C-o><C-w>h', { noremap = true, silent = true }) -- Janela à esquerda
