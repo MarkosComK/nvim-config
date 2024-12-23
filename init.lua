@@ -65,6 +65,7 @@ require("lazy").setup({
 			}
 		end,
 	},
+	require 'plugins.lualine',
 	require 'plugins.java',
 	require 'plugins.neo-tree',
 	require 'plugins.coc',
@@ -74,6 +75,7 @@ require("lazy").setup({
 	require 'plugins.42-header',
 	require 'plugins.42-norminette',
 	require 'plugins.barbar',
+	require 'plugins.neoformat',
 	-- Theme setup
 	require 'themes.everforest',
 })
