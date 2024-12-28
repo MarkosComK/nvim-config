@@ -9,7 +9,7 @@ return {
 	require('telescope').setup {
 		defaults = {
 			-- Adding transparency
-			winblend = 10,  -- Value between 0-100, 0 is fully opaque, 100 is fully transparent
+			winblend = 0,  -- Value between 0-100, 0 is fully opaque, 100 is fully transparent
 			-- Making the window a bit prettier
 			layout_strategy = 'horizontal',
 			layout_config = {
