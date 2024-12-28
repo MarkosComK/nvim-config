@@ -41,7 +41,7 @@ vim.opt.signcolumn = "yes"
 vim.api.nvim_set_keymap('n', 'H', '<Cmd>BufferPrevious<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', 'L', '<Cmd>BufferNext<CR>', { noremap = true, silent = true })
 -- Key mapping to close the current buffer/tab in barbar.nvim
-vim.api.nvim_set_keymap('n', '<C-q>', '<Cmd>BufferClose<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>q', '<Cmd>BufferClose<CR>', { noremap = true, silent = true })
 
 --prevent swap files
 vim.opt.swapfile = false
