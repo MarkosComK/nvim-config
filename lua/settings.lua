@@ -5,6 +5,8 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+--Saves using leader W
+vim.keymap.set('n', '<leader>w', '<cmd>w<CR>', { desc = 'Save file', silent = true })
 
 -- Mostrar números de linha e números relativos
 vim.opt.number = true   -- Exibe números de linha
