@@ -48,8 +48,9 @@ vim.api.nvim_set_keymap('n', '<leader>q', '<Cmd>BufferClose<CR>', { noremap = tr
 --prevent swap files
 vim.opt.swapfile = false
 
+-- Python and Rust files tab configuration
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = "python",
+  pattern = { "python", "rust" },
   callback = function()
     vim.opt_local.expandtab = false
     vim.opt_local.tabstop = 4

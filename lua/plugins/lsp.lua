@@ -7,6 +7,7 @@ return {
       opts = {
         ensure_installed = {
           "pyright",
+          "rust-analyzer",
         },
       },
     },
@@ -64,6 +65,7 @@ return {
       html = {},
       cssls = {},
       tsserver = {},
+	  rust_analyzer = {},
       emmet_ls = {
         filetypes = { 
           'html', 
