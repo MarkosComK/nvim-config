@@ -77,5 +77,5 @@ require("lazy").setup({
 	require 'plugins.barbar',
 	require 'plugins.neoformat',
 	-- Theme setup
-	require 'themes.everforest',
+	require 'themes.melange',
 })
