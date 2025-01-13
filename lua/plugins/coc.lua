@@ -1,14 +1,17 @@
 return {
   'neoclide/coc.nvim',
-  branch = 'release', -- Use the latest stable release
+  branch = 'release',
   config = function()
-    -- Configurações do Coc.nvim
-    vim.cmd [[
-      " Confirma a seleção ao pressionar Enter
-      inoremap <silent> <expr> <CR> pumvisible() ? coc#pum#confirm() : "<C-g>u<CR>"
-      
-      " Configura o botão de confirmação
-      let g:coc_confirm_key = '<CR>'
+    vim.cmd[[
+      " Use tab to select the first item
+      inoremap <silent><expr> <TAB> 
+        \ coc#pum#visible() ? coc#pum#confirm() :
+        \ "\<Tab>"
+
+      " Use esc to close completion menu
+      inoremap <expr> <Esc> 
+        \ coc#pum#visible() ? coc#pum#cancel() : 
+        \ "\<Esc>"
     ]]
-end,
+  end
 }
