@@ -56,6 +56,7 @@ require("lazy").setup({
 	require 'plugins.barbar',
 	require 'plugins.neoformat',
 	require 'plugins.zig',
+	require 'plugins.zig-lsp',
 	-- Theme setup
 	require 'themes.melange',
 })
