@@ -76,6 +76,7 @@ require("lazy").setup({
 	require 'plugins.42-norminette',
 	require 'plugins.barbar',
 	require 'plugins.neoformat',
+	require 'plugins.zig',
 	-- Theme setup
 	require 'themes.melange',
 })
