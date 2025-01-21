@@ -44,27 +44,6 @@ require("lazy").setup({
 	},
 	require 'plugins.telescope',
 		  -- Outros plugins...
-	{
-		"hrsh7th/nvim-cmp",
-		dependencies = {
-		  "hrsh7th/cmp-nvim-lsp", -- Adicione este plugin
-		  "hrsh7th/cmp-buffer",
-		  "hrsh7th/cmp-path",
-		  "hrsh7th/cmp-cmdline",
-		},
-		config = function()
-		local cmp = require("cmp")
-		cmp.setup {
-			mapping = {
-			  -- Configure suas teclas de atalho
-			},
-			sources = {
-			  { name = "nvim_lsp" },
-			  { name = "buffer" },
-			},
-			}
-		end,
-	},
 	require 'plugins.lualine',
 	require 'plugins.java',
 	require 'plugins.neo-tree',
