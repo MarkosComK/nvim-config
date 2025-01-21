@@ -14,10 +14,10 @@ return {
 
 				-- Tmux-aware keymaps
 				vim.keymap.set("n", "<leader>zr", function()
-					local file = vim.fn.expand("%:p")
+					local cwd = vim.fn.getcwd()
 					vim.fn.system('tmux split-window -v -p 60')
-					vim.fn.system(string.format('tmux send-keys "zig run %s" C-m', file))
-				end, { buffer = true, desc = "Run Zig file" })
+					vim.fn.system(string.format('tmux send-keys "cd %s && zig build test" C-m', cwd))
+				end, { buffer = true, desc = "Run Zig project from working directory" })
 
 				vim.keymap.set("n", "<leader>zt", function()
 					local current_dir = vim.fn.expand("%:p:h")
