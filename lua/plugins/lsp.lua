@@ -1,132 +1,103 @@
 return {
-	'neovim/nvim-lspconfig',
-	dependencies = {
-		{
-			'williamboman/mason.nvim',
-			config = true,
-			opts = {
-				ensure_installed = {
-					"pyright",
-					"rust-analyzer",
-					"zls",
-				},
-			},
-		},
-		'williamboman/mason-lspconfig.nvim',
-		'WhoIsSethDaniel/mason-tool-installer.nvim',
-		{ 'j-hui/fidget.nvim', opts = {} },
-		{ 'folke/neodev.nvim', opts = {} },
-	},
-	config = function()
-	-- LSP attach function
-		vim.api.nvim_create_autocmd('LspAttach', {
-			group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
-			callback = function(event)
-			local map = function(keys, func, desc)
-			  vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
-			end
+    'neovim/nvim-lspconfig',
+    dependencies = {
+        'williamboman/mason.nvim',
+        'williamboman/mason-lspconfig.nvim',
+        'hrsh7th/cmp-nvim-lsp',
+        {
+            "hrsh7th/nvim-cmp",
+            dependencies = {
+                "L3MON4D3/LuaSnip",
+                "saadparwaiz1/cmp_luasnip",
+                "rafamadriz/friendly-snippets",
+            },
+        },
+    },
+    config = function()
+        require('mason').setup()
+        require('mason-lspconfig').setup({
+            ensure_installed = {
+                "zls",  -- Zig language server
+            }
+        })
 
-			map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-			map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-			map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-			map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-			map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-			map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-			map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-			map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-			map('K', vim.lsp.buf.hover, 'Hover Documentation')
-			map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+        -- Setup nvim-cmp for autocompletion
+        local cmp = require('cmp')
+        local luasnip = require('luasnip')
 
-			-- Document highlight
-			local client = vim.lsp.get_client_by_id(event.data.client_id)
-			if client and client.server_capabilities.documentHighlightProvider then
-				local highlight_group = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
-				vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-					buffer = event.buf,
-					group = highlight_group,
-					callback = vim.lsp.buf.document_highlight,
-				})
-				vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-					buffer = event.buf,
-					group = highlight_group,
-					callback = vim.lsp.buf.clear_references,
-				})
-			end
-		end,
-		})
+        cmp.setup({
+            snippet = {
+                expand = function(args)
+                    luasnip.lsp_expand(args.body)
+                end,
+            },
+            mapping = cmp.mapping.preset.insert({
+                ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+                ['<C-f>'] = cmp.mapping.scroll_docs(4),
+                ['<C-Space>'] = cmp.mapping.complete(),
+                ['<CR>'] = cmp.mapping.confirm {
+                    behavior = cmp.ConfirmBehavior.Replace,
+                    select = true,
+                },
+                ['<Tab>'] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.select_next_item()
+                    elseif luasnip.expand_or_jumpable() then
+                        luasnip.expand_or_jump()
+                    else
+                        fallback()
+                    end
+                end, { 'i', 's' }),
+                ['<S-Tab>'] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.select_prev_item()
+                    elseif luasnip.jumpable(-1) then
+                        luasnip.jump(-1)
+                    else
+                        fallback()
+                    end
+                end, { 'i', 's' }),
+            }),
+            sources = {
+                { name = 'nvim_lsp' },
+                { name = 'luasnip' },
+                { name = 'buffer' },
+                { name = 'path' },
+            },
+        })
 
-		-- Server capabilities
-		local capabilities = vim.lsp.protocol.make_client_capabilities()
-		capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+        -- Configure Zig LSP
+        local capabilities = require('cmp_nvim_lsp').default_capabilities()
+        
+        require('lspconfig').zls.setup({
+            capabilities = capabilities,
+            settings = {
+                zig = {
+                    checkOnSave = true,
+                    formationStyle = "file",
+                    enableInlayHints = true,
+                    semanticTokens = true,
+                    showAllCompletion = true,
+                }
+            },
+            on_attach = function(client, bufnr)
+                -- Enable completion triggered by <c-x><c-o>
+                vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-		-- Server configurations
-		local servers = {
-			clangd = {},
-			pyright = {},
-			html = {},
-			cssls = {},
-			tsserver = {},
-			rust_analyzer = {},
-			zls = {
-				capabilities = {
-					textDocument = {
-						completion = {
-							completionItem = {
-								snippetSupport = true
-							}
-						}
-					}
-				}
-			},
-			emmet_ls = {
-				filetypes = {
-					'html',
-					'css',
-					'scss',
-					'javascript',
-					'javascriptreact',
-					'typescript',
-					'typescriptreact'
-				},
-			},
-			lua_ls = {
-				settings = {
-					Lua = {
-						completion = { callSnippet = 'Replace' },
-					},
-				},
-			},
-		}
-
-		require('mason').setup()
-		local ensure_installed = vim.tbl_keys(servers or {})
-		vim.list_extend(ensure_installed, {
-			'stylua',
-			'prettier',
-		})
-		
-		require('mason-lspconfig').setup {
-			handlers = {
-				function(server_name)
-				  local server = servers[server_name] or {}
-				  server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-				  require('lspconfig')[server_name].setup(server)
-				end,
-			},
-		}
-
-		-- Web files tab configuration
-		local web_filetypes = { "html", "css", "scss", "javascript", "typescript", "javascriptreact", "typescriptreact" }
-		for _, ft in ipairs(web_filetypes) do
-			vim.api.nvim_create_autocmd("FileType", {
-				pattern = ft,
-				callback = function()
-					vim.opt_local.expandtab = false
-					vim.opt_local.tabstop = 4
-					vim.opt_local.shiftwidth = 4
-					vim.opt_local.softtabstop = 4
-				end
-			})
-		end
-	end,
+                -- Mappings
+                local bufopts = { noremap=true, silent=true, buffer=bufnr }
+                vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+                vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+                vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+                vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+                vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+                vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+                vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
+                vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+                vim.keymap.set('n', '<leader>f', function() 
+                    vim.lsp.buf.format { async = true }
+                end, bufopts)
+            end,
+        })
+    end
 }
