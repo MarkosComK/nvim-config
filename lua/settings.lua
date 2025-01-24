@@ -57,3 +57,42 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.shiftwidth = 4
   end,
 })
+
+-- Terminal popup configuration
+vim.keymap.set('n', '<leader>tt', function()
+    -- Get dimensions for centered floating window
+    local width = math.floor(vim.o.columns * 0.8)
+    local height = math.floor(vim.o.lines * 0.8)
+    local row = math.floor((vim.o.lines - height) / 2)
+    local col = math.floor((vim.o.columns - width) / 2)
+
+    -- Create floating window
+    local opts = {
+        relative = 'editor',
+        width = width,
+        height = height,
+        row = row,
+        col = col,
+        style = 'minimal',
+        border = 'rounded'
+    }
+    
+    local buf = vim.api.nvim_create_buf(false, true)
+    local win = vim.api.nvim_open_win(buf, true, opts)
+
+    -- Open terminal
+    vim.fn.termopen(os.getenv('SHELL'), {
+        env = {
+            TERM = 'dumb'  -- This is the key change
+        }
+    })
+    
+    -- Set terminal mode mappings
+    vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { buffer = buf })
+    vim.keymap.set('t', '<C-q>', function()
+        vim.api.nvim_win_close(win, true)
+    end, { buffer = buf })
+    
+    -- Start in insert mode
+    vim.cmd('startinsert')
+end, { noremap = true, silent = true })
