@@ -74,24 +74,39 @@ vim.keymap.set('n', '<leader>tt', function()
         row = row,
         col = col,
         style = 'minimal',
-        border = 'rounded'
+        border = 'double',  -- nicer border style
+        title = '  Terminal  ',  -- add a title
+        title_pos = 'center'
     }
     
     local buf = vim.api.nvim_create_buf(false, true)
     local win = vim.api.nvim_open_win(buf, true, opts)
 
-    -- Open terminal
-    vim.fn.termopen(os.getenv('SHELL'), {
-        env = {
-            TERM = 'dumb'  -- This is the key change
-        }
+    -- Set window appearance
+    vim.wo[win].winhl = 'Normal:TerminalNormal,FloatBorder:TerminalBorder'
+    vim.wo[win].winblend = 0  -- no transparency
+    
+    -- Create highlight groups for the terminal
+    vim.api.nvim_set_hl(0, 'TerminalNormal', {
+        fg = '#a9b1d6'   -- light text color
     })
+    vim.api.nvim_set_hl(0, 'TerminalBorder', {
+        fg = '#ff9e64'   -- orange border color
+    })
+
+    -- Open terminal
+    vim.fn.termopen(os.getenv('SHELL'))
     
     -- Set terminal mode mappings
     vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { buffer = buf })
     vim.keymap.set('t', '<C-q>', function()
         vim.api.nvim_win_close(win, true)
     end, { buffer = buf })
+    
+    -- Extra terminal settings
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
+    vim.opt_local.signcolumn = 'no'
     
     -- Start in insert mode
     vim.cmd('startinsert')
