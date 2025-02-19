@@ -48,5 +48,15 @@
   "diagnostic.checkCurrentLine": true,
   "diagnostic.virtualText": true,
   "diagnostic.virtualTextPrefix": "■ ",
-  "snippets.ultisnips.pythonPrompt": false
+  "snippets.ultisnips.pythonPrompt": false,
+  "coc.preferences.formatOnSave": true,
+  "typescript.suggest.enabled": true,
+  "javascript.suggest.enabled": true,
+  "languageserver": {
+    "styled-components": {
+      "command": "vscode-styled-components",
+      "filetypes": ["typescript", "typescriptreact", "javascript", "javascriptreact"],
+      "rootPatterns": ["package.json"]
+    }
+  }
 }

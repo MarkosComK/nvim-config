@@ -17,14 +17,19 @@ return {
         require('mason').setup()
         require('mason-lspconfig').setup({
             ensure_installed = {
-                "zls",  -- Zig language server
+                "zls",  -- Zig
+                "ts_ls", -- TypeScript/JavaScript
+                "html",
+                "cssls",
+                "tailwindcss",
+                "emmet_ls",
+                "eslint",
+                "stylelint_lsp"
             }
         })
 
-        -- Setup nvim-cmp for autocompletion
         local cmp = require('cmp')
         local luasnip = require('luasnip')
-
         cmp.setup({
             snippet = {
                 expand = function(args)
@@ -66,9 +71,9 @@ return {
             },
         })
 
-        -- Configure Zig LSP
         local capabilities = require('cmp_nvim_lsp').default_capabilities()
         
+        -- Zig LSP setup
         require('lspconfig').zls.setup({
             capabilities = capabilities,
             settings = {
@@ -80,24 +85,65 @@ return {
                     showAllCompletion = true,
                 }
             },
-            on_attach = function(client, bufnr)
-                -- Enable completion triggered by <c-x><c-o>
-                vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+            on_attach = on_attach
+        })
 
-                -- Mappings
-                local bufopts = { noremap=true, silent=true, buffer=bufnr }
-                vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-                vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-                vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-                vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-                vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-                vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
-                vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
-                vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-                vim.keymap.set('n', '<leader>f', function() 
-                    vim.lsp.buf.format { async = true }
-                end, bufopts)
-            end,
+        -- Web development LSP setups
+        local servers = {
+			ts_ls = {
+				init_options = {
+					plugins = {
+						{
+							name = "@styled/typescript-styled-plugin",
+							location = "node_modules/@styled/typescript-styled-plugin"
+						}
+					}
+				}
+			},
+            html = {},
+            cssls = {},
+            tailwindcss = {},
+            emmet_ls = {
+                filetypes = { 'html', 'typescriptreact', 'javascriptreact', 'css', 'sass', 'scss', 'less' },
+            },
+            eslint = {},
+            stylelint_lsp = {}
+        }
+
+        for server, config in pairs(servers) do
+            require('lspconfig')[server].setup(vim.tbl_extend('force', {
+                capabilities = capabilities,
+                on_attach = on_attach
+            }, config))
+        end
+
+        -- LSP on_attach function
+        local function on_attach(client, bufnr)
+            vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+            
+            local bufopts = { noremap=true, silent=true, buffer=bufnr }
+            vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+            vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+            vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+            vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+            vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+            vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+            vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
+            vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+            vim.keymap.set('n', '<leader>f', function() 
+                vim.lsp.buf.format { async = true }
+            end, bufopts)
+        end
+
+        -- Web files configuration for tabs
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = { "javascript", "typescript", "javascriptreact", "typescriptreact", "html", "css" },
+            callback = function()
+                vim.opt_local.expandtab = false
+                vim.opt_local.tabstop = 2
+                vim.opt_local.shiftwidth = 2
+                vim.opt_local.softtabstop = 2
+            end
         })
     end
 }
