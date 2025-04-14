@@ -50,8 +50,22 @@
   "diagnostic.virtualTextPrefix": "■ ",
   "snippets.ultisnips.pythonPrompt": false,
   "coc.preferences.formatOnSave": true,
+  
+  // Language-specific settings
   "typescript.suggest.enabled": true,
   "javascript.suggest.enabled": true,
+  
+  // C language settings
+  "clangd.enabled": true,
+  "clangd.semanticHighlighting": true,
+  "clangd.fallbackFlags": ["-std=c99", "-Wall", "-Wextra"],
+  "clangd.arguments": ["--header-insertion=never", "--completion-style=detailed"],
+  "clangd.trace.server": "off",
+  
+  // Configure special filetypes
+  "coc.preferences.rootPatterns": [".git", ".svn", ".hg", ".root", "Makefile", "compile_flags.txt"],
+  
+  // Language servers
   "languageserver": {
     "styled-components": {
       "command": "vscode-styled-components",
