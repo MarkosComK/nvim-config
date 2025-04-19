@@ -17,6 +17,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Load plugins with lazy.nvim
 require("lazy").setup({
+    require 'plugins.42-header',
     require 'plugins.telescope',
     require 'plugins.lualine',
     require 'plugins.neo-tree',
