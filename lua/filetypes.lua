@@ -1,22 +1,16 @@
 return {
-	-- Set up autocommands to load language configs
 	setup = function()
-		-- Load C configuration for C files
+		-- C-specific settings
 		vim.api.nvim_create_autocmd("FileType", {
-			pattern = "c",
+			pattern = { "c", "cpp" },
 			callback = function()
-				require("language.c").setup()
-			end
-		})
-		
-		-- Terminal settings
-		vim.api.nvim_create_autocmd("TermOpen", {
-			pattern = "*",
-			callback = function()
-				vim.opt_local.number = false
-				vim.opt_local.relativenumber = false
-				vim.opt_local.signcolumn = "no"
-				vim.cmd("startinsert")
+				-- Use tabs instead of spaces
+				vim.opt_local.expandtab = false
+				vim.opt_local.tabstop = 4
+				vim.opt_local.shiftwidth = 4
+				
+				-- Start clangd explicitly
+				vim.cmd("LspStart clangd")
 			end
 		})
 	end
