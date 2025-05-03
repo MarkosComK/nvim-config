@@ -52,7 +52,6 @@ return {
                 { name = 'buffer' },
                 { name = 'path' },
             },
-            -- IMPORTANT: Completely disable autoindent which is causing the error
             experimental = {
                 ghost_text = false,
             },
@@ -102,27 +101,6 @@ return {
             on_attach = on_attach,
             capabilities = capabilities
         }
-        
-        -- Set up clangd directly
-        require('lspconfig').clangd.setup({
-            cmd = {"clangd", "--background-index", "--suggest-missing-includes"},
-            capabilities = capabilities,
-            on_attach = on_attach,
-            filetypes = { "c", "cpp" },
-        })
-        
-        -- Make sure clangd starts for C files
-        vim.api.nvim_create_autocmd("FileType", {
-            pattern = {"c", "cpp"},
-            callback = function()
-                -- Force enable syntax highlighting
-                vim.cmd("syntax on")
-                vim.opt_local.termguicolors = true
-                
-                -- Start clangd
-                vim.cmd("LspStart clangd")
-            end
-        })
         
         -- Force enable syntax highlighting for all filetypes
         vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {

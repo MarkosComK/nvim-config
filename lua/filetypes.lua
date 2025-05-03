@@ -5,10 +5,11 @@ return {
         vim.api.nvim_create_autocmd("FileType", {
             pattern = {"c", "cpp", "h", "hpp"},
             callback = function()
-                -- Make sure the language.c module exists
                 local ok, c_config = pcall(require, "language.c")
                 if ok then
                     c_config.setup()
+                else
+                    vim.notify("C language configuration not found. Make sure language/c.lua exists.", vim.log.levels.WARN)
                 end
             end
         })
