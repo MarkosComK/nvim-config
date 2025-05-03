@@ -54,7 +54,6 @@ return {
 					}
 				}
 			})
-
 			-- C-specific editor settings
 			vim.api.nvim_create_autocmd("FileType", {
 				pattern = { "c", "cpp" },

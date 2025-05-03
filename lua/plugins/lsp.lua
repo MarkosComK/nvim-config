@@ -32,20 +32,25 @@ return {
 		
 		-- Setup basic cmp for autocompletion
 		local cmp = require('cmp')
-		cmp.setup({
-			mapping = cmp.mapping.preset.insert({
-				['<C-Space>'] = cmp.mapping.complete(),
-				['<CR>'] = cmp.mapping.confirm({ select = true }),
-				['<Tab>'] = cmp.mapping.select_next_item(),
-				['<S-Tab>'] = cmp.mapping.select_prev_item(),
-			}),
-			sources = {
-				{ name = 'nvim_lsp' },
-				{ name = 'buffer' },
-			},
-		})
-
-		-- Setup clangd directly (skip the language/c.lua step)
+cmp.setup({
+    mapping = cmp.mapping.preset.insert({
+        ['<C-j>'] = cmp.mapping.select_next_item(),
+        ['<C-k>'] = cmp.mapping.select_prev_item(),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        -- Space will only select an option if it's already highlighted
+        ['<Space>'] = cmp.mapping(function(fallback)
+            if cmp.visible() and cmp.get_selected_entry() then
+                cmp.confirm({ select = false }) -- Only select if already highlighted
+            else
+                fallback() -- Insert a normal space
+            end
+        end, {'i', 's'}),
+    }),
+    sources = {
+        { name = 'nvim_lsp' },
+        { name = 'buffer' },
+    },
+})		-- Setup clangd directly (skip the language/c.lua step)
 		require('lspconfig').clangd.setup({
 			cmd = { "clangd", "--background-index", "--suggest-missing-includes" },
 			filetypes = { "c", "cpp" },
