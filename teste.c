@@ -1,6 +1,4 @@
 #include <unistd.h>
-qqq        
-#
 
 int	main(void)
 {

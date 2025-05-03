@@ -28,5 +28,3 @@ require("lazy").setup({
     -- Theme setup
     require 'themes.melange',
 })
-
-require('filetypes').setup()
