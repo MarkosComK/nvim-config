@@ -24,7 +24,6 @@ require("lazy").setup({
     require 'plugins.auto-pairs',
     require 'plugins.web-devicons',
     require 'plugins.barbar',
-    require 'plugins.neoformat',
     require 'plugins.lsp',
     -- Theme setup
     require 'themes.melange',
