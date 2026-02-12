@@ -21,7 +21,7 @@ require("settings")
 require("keybinds")
 
 -- Load plugins
-require("lazy").setup("plugins", {
-  install = { colorscheme = { "themes.cyberdream" } },
-  performance = {},
+require("lazy").setup({
+  { import = "plugins" },
+  { import = "themes" },
 })
