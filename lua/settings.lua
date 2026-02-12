@@ -25,8 +25,6 @@ vim.g.clipboard = {
     ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
   },
   paste = {
-    -- Do NOT define paste → falls back to Neovim's internal registers
-    -- This prevents the waiting message and delay
   },
 }
 
