@@ -22,6 +22,6 @@ require("keybinds")
 
 -- Load plugins
 require("lazy").setup("plugins", {
-  install = { colorscheme = { "kanagawa-dragon" } },
+  install = { colorscheme = { "themes.cyberdream" } },
   performance = {},
 })

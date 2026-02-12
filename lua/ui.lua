@@ -1,0 +1,22 @@
+-- Full transparency overrides (after colorscheme loads)
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+    vim.api.nvim_set_hl(0, "Normal",      { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "NormalNC",    { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "SignColumn",  { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "FoldColumn",  { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "VertSplit",   { bg = "NONE", fg = "NONE" })
+    vim.api.nvim_set_hl(0, "WinSeparator",{ bg = "NONE", fg = "NONE" })
+    vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "NONE" })
+    -- For barbar/navbar transparency (if you add it later)
+    vim.api.nvim_set_hl(0, "BufferTabpages",   { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "BufferCurrent",    { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "BufferVisible",    { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "BufferInactive",   { bg = "NONE" })
+    -- Neo-tree / sidebars (if added)
+    vim.api.nvim_set_hl(0, "NeoTreeNormal",    { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "NeoTreeNormalNC",  { bg = "NONE" })
+  end,
+})

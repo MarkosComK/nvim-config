@@ -15,18 +15,30 @@ opt.relativenumber   = true
 opt.list      = true
 opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
-vim.opt.clipboard = "unnamedplus"
-
 -- Force OSC 52 clipboard (works over SSH + tmux + iTerm2)
 vim.g.clipboard = {
   name = 'OSC52-copy-only',
   copy = {
     ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
     ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
-  },
-  paste = {
+  }, paste = {
   },
 }
+
+if vim.env.TMUX then
+  vim.g.clipboard = {
+    name = 'tmux-fallback',
+    copy = {
+      ['+'] = { 'tmux', 'load-buffer', '-' },
+      ['*'] = { 'tmux', 'load-buffer', '-' },
+    },
+    paste = {
+      ['+'] = { 'tmux', 'save-buffer', '-' },
+      ['*'] = { 'tmux', 'save-buffer', '-' },
+    },
+    cache_enabled = 0,
+  }
+end
 
 -- Still use system clipboard for explicit "+/* operations
 vim.opt.clipboard = "unnamedplus"
