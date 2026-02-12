@@ -27,13 +27,11 @@ require("lazy").setup({
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = "lua",
+	pattern = { "lua", "c", "cpp" },
 	callback = function(ev)
-		local bufnr = ev.buf
-		local ok, mod = pcall(require, "language.lua")
+		local ok, mod = pcall(require, "language." .. ev.match)
 		if ok and mod.setup then
-			mod.setup(bufnr)
+			mod.setup(ev.buf)
 		end
 	end,
 })
-

@@ -15,6 +15,9 @@ opt.relativenumber   = true
 opt.list      = true
 opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
+-- always show sign column (2 columns wide), no shifting
+vim.opt.signcolumn = "yes"
+
 -- Force OSC 52 clipboard (works over SSH + tmux + iTerm2)
 vim.g.clipboard = {
   name = 'OSC52-copy-only',
